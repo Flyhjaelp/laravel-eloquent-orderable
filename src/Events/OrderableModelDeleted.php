@@ -1,24 +1,22 @@
 <?php
 
-
 namespace Flyhjaelp\LaravelEloquentOrderable\Events;
 
-
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Events\Dispatchable;
 use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
 
-class OrderableModelDeleted {
+class OrderableModelDeleted
+{
+    use Dispatchable, SerializesModels;
 
-   use Dispatchable, SerializesModels;
+    /**
+     * @var OrderableInterface
+     */
+    public $orderableModel;
 
-   /**
-    * @var OrderableInterface
-    */
-   public $orderableModel;
-
-   public function __construct(OrderableInterface $orderableModel){
-      $this->orderableModel = $orderableModel;
-   }
-
+    public function __construct(OrderableInterface $orderableModel)
+    {
+        $this->orderableModel = $orderableModel;
+    }
 }

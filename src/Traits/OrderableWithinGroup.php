@@ -1,47 +1,52 @@
 <?php
 
-
 namespace Flyhjaelp\LaravelEloquentOrderable\Traits;
 
-
-use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelUpdating;
-use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelUpdating;
+use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
 
-trait OrderableWithinGroup{
+trait OrderableWithinGroup
+{
+    use SharedOrderableMethods;
 
-   use SharedOrderableMethods;
+    public static function bootOrderableWithinGroup(): void
+    {
+        static::addDefaultOrderingEvents();
 
-   public static function bootOrderableWithinGroup(): void {
-      static::addDefaultOrderingEvents();
+        static::updating(function (OrderableInterface $orderableModel) {
+            static::fireEventIfNotUpdatingOrderAlready(OrderableModelUpdating::class, $orderableModel);
+        });
 
-      static::updating(function (OrderableInterface $orderableModel){
-         static::fireEventIfNotUpdatingOrderAlready(OrderableModelUpdating::class,$orderableModel);
-      });
+        static::addGlobalOrderingScope();
+    }
 
-      static::addGlobalOrderingScope();
-   }
+    abstract public function scopeWithinOrderGroup(Builder $query, OrderableInterface $orderableModel): void;
 
-   abstract public function scopeWithinOrderGroup(Builder $query, OrderableInterface $orderableModel): void;
-   abstract public function columnsAffectingOrderGroup(): \Illuminate\Support\Collection;
+    abstract public function columnsAffectingOrderGroup(): \Illuminate\Support\Collection;
 
-   public function getLastOrder(): int {
-      $orderColumn = $this->getOrderableColumn();
-      return optional(static::withinOrderGroup($this)->get()->last())->$orderColumn ?? 0;
-   }
+    public function getLastOrder(): int
+    {
+        $orderColumn = $this->getOrderableColumn();
 
-   /**
-    * Methods to return collections within certains order
-    */
-   public function getAllHigherOrEqualOrdered(): Collection {
-      $orderColumn = $this->getOrderableColumn();
-      return static::withinOrderGroup($this)->where($orderColumn,'>=',$this->$orderColumn)->where('id','!=',$this->id)->get();
-   }
+        return optional(static::withinOrderGroup($this)->get()->last())->$orderColumn ?? 0;
+    }
 
-   public function getAllOrderedBetweenWithoutSelf(int $minOrder, int $maxOrder): Collection {
-      $orderColumn = $this->getOrderableColumn();
-      return static::withinOrderGroup($this)->whereBetween($orderColumn, [$minOrder, $maxOrder])->where('id', '!=', $this->id)->get();
-   }
+    /**
+     * Methods to return collections within certains order.
+     */
+    public function getAllHigherOrEqualOrdered(): Collection
+    {
+        $orderColumn = $this->getOrderableColumn();
 
+        return static::withinOrderGroup($this)->where($orderColumn, '>=', $this->$orderColumn)->where('id', '!=', $this->id)->get();
+    }
+
+    public function getAllOrderedBetweenWithoutSelf(int $minOrder, int $maxOrder): Collection
+    {
+        $orderColumn = $this->getOrderableColumn();
+
+        return static::withinOrderGroup($this)->whereBetween($orderColumn, [$minOrder, $maxOrder])->where('id', '!=', $this->id)->get();
+    }
 }
