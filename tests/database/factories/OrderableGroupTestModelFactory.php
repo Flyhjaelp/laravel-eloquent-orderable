@@ -15,7 +15,5 @@ use Flyhjaelp\LaravelEloquentOrderable\Tests\OrderableGroupTestModel;
 */
 
 $factory->define(OrderableGroupTestModel::class, function (Faker $faker) {
-
-   return [];
-
+    return [];
 });

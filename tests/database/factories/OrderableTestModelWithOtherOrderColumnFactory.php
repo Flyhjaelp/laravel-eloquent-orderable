@@ -15,7 +15,5 @@ use Flyhjaelp\LaravelEloquentOrderable\Tests\OrderableTestModelWithOtherOrderCol
 */
 
 $factory->define(OrderableTestModelWithOtherOrderColumn::class, function (Faker $faker) {
-
-   return [];
-
+    return [];
 });
