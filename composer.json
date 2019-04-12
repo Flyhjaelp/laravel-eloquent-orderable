@@ -1,0 +1,34 @@
+{
+    "name": "flyhjaelp/laravel-eloquent-orderable",
+    "description": "Make your Eloquent models orderable by using the orderable trait on them. Which automatically updates the order of all other models within it's group when the order of a current model is updated or a new model insereted or deleted.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Philip Brechmann",
+            "email": "pb@milkwood.dk"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^8.1",
+        "orchestra/testbench": "^3.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Flyhjaelp\\LaravelEloquentOrderable\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Flyhjaelp\\LaravelEloquentOrderable\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Flyhjaelp\\LaravelEloquentOrderable\\EloquentOrderableServiceProvider"
+            ]
+        }
+    }
+}
