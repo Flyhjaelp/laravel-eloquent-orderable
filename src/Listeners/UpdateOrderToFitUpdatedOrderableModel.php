@@ -1,51 +1,47 @@
 <?php
 
-
 namespace Flyhjaelp\LaravelEloquentOrderable\Listeners;
 
-
-use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelCreating;
 use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelUpdated;
 use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
 
-class UpdateOrderToFitUpdatedOrderableModel {
+class UpdateOrderToFitUpdatedOrderableModel
+{
+    public $orderColumn;
+    public $originalOrderValue;
+    public $newOrderValue;
 
-   public $orderColumn;
-   public $originalOrderValue;
-   public $newOrderValue;
+    /**
+     * @var OrderableInterface
+     */
+    public $orderableModel;
 
-   /**
-    * @var OrderableInterface
-    */
-   public $orderableModel;
+    public function handle(OrderableModelUpdated $event)
+    {
+        $this->originalOrderValue = $event->orderableModel->getOriginalOrderValue();
+        $this->newOrderValue = $event->orderableModel->getCurrentOrderValue();
+        $this->orderableModel = $event->orderableModel;
 
-   public function handle(OrderableModelUpdated $event) {
+        if ($this->orderableModel->hasChangedOrderGroup()) {
+            $this->updateOrderInNewGroup();
+        } else {
+            $this->updateOrderWithinGroup();
+        }
+    }
 
-      $this->originalOrderValue = $event->orderableModel->getOriginalOrderValue();
-      $this->newOrderValue = $event->orderableModel->getCurrentOrderValue();
-      $this->orderableModel = $event->orderableModel;
+    protected function updateOrderInNewGroup()
+    {
+        $this->orderableModel->getAllHigherOrEqualOrdered()->each->increaseOrder();
+    }
 
-      if($this->orderableModel->hasChangedOrderGroup()){
-         $this->updateOrderInNewGroup();
-      }else{
-         $this->updateOrderWithinGroup();
-      }
+    protected function updateOrderWithinGroup()
+    {
+        if ($this->originalOrderValue > $this->newOrderValue) {
+            $this->orderableModel->getAllOrderedBetweenWithoutSelf($this->newOrderValue, $this->originalOrderValue)->each->increaseOrder();
+        }
 
-   }
-
-   protected function updateOrderInNewGroup() {
-      $this->orderableModel->getAllHigherOrEqualOrdered()->each->increaseOrder();
-   }
-
-   protected function updateOrderWithinGroup() {
-
-      if($this->originalOrderValue> $this->newOrderValue){
-         $this->orderableModel->getAllOrderedBetweenWithoutSelf($this->newOrderValue,$this->originalOrderValue)->each->increaseOrder();
-      }
-
-      if($this->originalOrderValue< $this->newOrderValue){
-         $this->orderableModel->getAllOrderedBetweenWithoutSelf($this->originalOrderValue,$this->newOrderValue)->each->decreaseOrder();
-      }
-   }
-
+        if ($this->originalOrderValue < $this->newOrderValue) {
+            $this->orderableModel->getAllOrderedBetweenWithoutSelf($this->originalOrderValue, $this->newOrderValue)->each->decreaseOrder();
+        }
+    }
 }
