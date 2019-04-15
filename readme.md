@@ -13,7 +13,7 @@ composer require flyhjaelp/laravel-eloquent-orderable
 ## Database setup
 If you want to use the orderable functionality on a model it has to have a database column it can be ordered by. By default the package will look for a column named "order", but this can be overwritten. The order column should be an unsigned integer that's nullable. Example:
 
-```
+```php
 Schema::create('orderable_test_models', function (Blueprint $table) {
   $table->unsignedInteger('order')->nullable();
 });
@@ -123,14 +123,14 @@ Foobar::all()->pluck('order','id');
 
 ## Overwriting default values
 #### Overwriting default ordering column
-```
+```php
 public function getOrderableColumn(): string {
   return 'non_default_order_column';
 }
 ```
 
 #### Overwriting global ordering scope
-```
+```php
 public function scopeOrdered(Builder $query): void{
   $query->orderBy('menu_id')->orderBy('order');
 }
