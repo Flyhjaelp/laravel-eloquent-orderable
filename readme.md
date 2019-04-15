@@ -10,6 +10,15 @@ Install via composer
 composer require flyhjaelp/laravel-eloquent-orderable
 ```
 
+## Database setup
+If you want to use the orderable functionality on a model it has to have a database column it can be ordered by. By default the package will look for a column named "order", but this can be overwritten. The order column should be an unsigned integer that's nullable. Example:
+
+```
+Schema::create('orderable_test_models', function (Blueprint $table) {
+  $table->unsignedInteger('order')->nullable();
+});
+```
+
 ## Default Usage
 
 ```php
@@ -25,6 +34,7 @@ class Foobar extends Model implements OrderableInterface { //implement the order
    
 }
 ```
+
 #### Creating a new model without a specified order
 New instances will now have an order added to them, by default they are added as last in order.
 
