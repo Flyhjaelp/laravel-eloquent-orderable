@@ -33,6 +33,10 @@ trait OrderableWithinGroup
         return optional(static::withinOrderGroup($this)->get()->last())->$orderColumn ?? 0;
     }
 
+    public function scopeNotSelf(Builder $query, OrderableInterface $orderableModel): void {
+       $query->where('id', '!=', $orderableModel->id);
+    }
+
     /**
      * Methods to return collections within certains order.
      */
@@ -40,13 +44,13 @@ trait OrderableWithinGroup
     {
         $orderColumn = $this->getOrderableColumn();
 
-        return static::withinOrderGroup($this)->where($orderColumn, '>=', $this->$orderColumn)->where('id', '!=', $this->id)->get();
+        return static::withinOrderGroup($this)->where($orderColumn, '>=', $this->$orderColumn)->notSelf($this)->get();
     }
 
     public function getAllOrderedBetweenWithoutSelf(int $minOrder, int $maxOrder): Collection
     {
         $orderColumn = $this->getOrderableColumn();
 
-        return static::withinOrderGroup($this)->whereBetween($orderColumn, [$minOrder, $maxOrder])->where('id', '!=', $this->id)->get();
+        return static::withinOrderGroup($this)->whereBetween($orderColumn, [$minOrder, $maxOrder])->notSelf($this)->get();
     }
 }

@@ -57,6 +57,8 @@ class OrderableWithinGroupTest extends DefaultTestCase
 
         $this->assertEquals(1, $orderableModelA->fresh()->order);
         $this->assertEquals(2, $orderableModelC->fresh()->order);
+        $this->assertEquals(1, $orderableModelD->fresh()->order);
+        $this->assertEquals(2, $orderableModelE->fresh()->order);
         $this->assertEquals(3, $orderableModelF->fresh()->order);
     }
 

@@ -17,6 +17,6 @@ class OrderableModelDeleted
 
     public function __construct(OrderableInterface $orderableModel)
     {
-        $this->orderableModel = $orderableModel;
+       $this->orderableModel = $orderableModel;
     }
 }
