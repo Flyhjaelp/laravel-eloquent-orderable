@@ -108,6 +108,8 @@ class MenuItem extends Model implements OrderableInterface { //implement the ord
 New instances will have an order added to them, by default they are added as last in order within their group
 
 ```php
+<?php
+
 $foobarA = new Foobar();
 $foobarA->menu_id = 1;
 $foobarA->save();
@@ -121,7 +123,64 @@ Foobar::all()->pluck('order','id');
 // will output [1 => 1, 2 => 2, 3 => 1]
 ```
 
+## Usage within pivot models
+You can make pivot models orderable if you wish to be able order a many to many relationship whenever it's retrieved. The order only works one way, meaning if you for example have a journey that has mutiple checkpoints you can make the checkpoints come in the correct order when you retrieve them from the journey, but not the other way around.
+
+### Setup pivot model ordering
+For a pivot model to be orderable you have to use the `PivotOrderable` trait on the model. It's also required to have an autoincrementing primary key(usually an "id") in the pivot relationship table. Besides that you have to implement the methods mentioned under `OrderableWithinGroup`
+```php
+<?php
+
+use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
+use Flyhjaelp\LaravelEloquentOrderable\Traits\PivotOrderable;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Builder;
+
+class JourneyCheckpointsRelationship extends Pivot implements OrderableInterface{
+
+   use PivotOrderable;
+
+   public $incrementing = true;
+   
+   public function scopeWithinOrderGroup($query, OrderableInterface $orderableModel)
+   {
+      return $query->where('journey_id', $orderableModel->journey_id);
+   }
+
+   public function scopeOrdered(Builder $query): void
+   {
+      $query->orderBy('journey_id')->orderBy($this->getOrderableColumn());
+   }
+
+   public function columnsAffectingOrderGroup(): Collection
+   {
+      return collect(['journey_id']);
+   }
+   
+}
+```
+When calling the relationship from a model, you have to using the `using` method from the relationship. Also you have to add `orderBy` method call if you want the relationship ordered when retrieved.
+
+```php
+<?php
+
+use Illuminate\Database\Eloquent\Model;
+
+class Journey extends Model{
+
+   public function checkpoints() {
+      return $this
+         ->belongsToMany(Checkpoint::class)
+         ->using(JourneyCheckpointsRelationship::class)
+         ->withPivot('order')
+         ->orderBy('pivot_order');
+   }
+
+}
+
+```
 ## Overwriting default values
+You have to change the default column used for storing the order in, as well as the default ordering scope.
 #### Overwriting default ordering column
 ```php
 public function getOrderableColumn(): string {

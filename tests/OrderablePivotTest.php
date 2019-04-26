@@ -5,7 +5,6 @@ namespace Flyhjaelp\LaravelEloquentOrderable\Tests;
 
 
 use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
-use Flyhjaelp\LaravelEloquentOrderable\Traits\OrderableWithinGroup;
 use Flyhjaelp\LaravelEloquentOrderable\Traits\PivotOrderable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -214,11 +213,6 @@ class OrderablePivotTestRelationship extends Pivot implements OrderableInterface
    public function scopeOrdered(Builder $query): void
    {
       $query->orderBy('primary_test_pivot_model_id')->orderBy($this->getOrderableColumn());
-   }
-
-   public function scopeNotSelf(Builder $query, OrderableInterface $orderableModel): void {
-      $query->where('secondary_test_pivot_model_id', '!=', $orderableModel->secondary_test_pivot_model_id);
-
    }
 
    public function columnsAffectingOrderGroup(): Collection
