@@ -35,30 +35,26 @@ class CreatePackageTestTables extends Migration
             $table->timestamps();
         });
 
-       Schema::create('primary_test_pivot_models', function (Blueprint $table) {
-          $table->bigIncrements('id');
-          $table->timestamps();
-       });
+        Schema::create('primary_test_pivot_models', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->timestamps();
+        });
 
-       Schema::create('secondary_test_pivot_models', function (Blueprint $table) {
-          $table->bigIncrements('id');
-          $table->timestamps();
-       });
+        Schema::create('secondary_test_pivot_models', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->timestamps();
+        });
 
-       Schema::create('primary_secondary', function (Blueprint $table) {
+        Schema::create('primary_secondary', function (Blueprint $table) {
+            $table->bigIncrements('id');
 
-          $table->bigIncrements('id');
+            $table->bigInteger('primary_test_pivot_model_id')->unsigned();
+            $table->foreign('primary_test_pivot_model_id')->references('id')->on('primary_test_pivot_models')->onDelete('cascade');
+            $table->bigInteger('secondary_test_pivot_model_id')->unsigned();
+            $table->foreign('secondary_test_pivot_model_id')->references('id')->on('secondary_test_pivot_models')->onDelete('cascade');
 
-          $table->bigInteger('primary_test_pivot_model_id')->unsigned();
-          $table->foreign('primary_test_pivot_model_id')->references('id')->on('primary_test_pivot_models')->onDelete('cascade');
-          $table->bigInteger('secondary_test_pivot_model_id')->unsigned();
-          $table->foreign('secondary_test_pivot_model_id')->references('id')->on('secondary_test_pivot_models')->onDelete('cascade');
-
-          $table->unsignedInteger('order')->nullable();
-
-       });
-
-
+            $table->unsignedInteger('order')->nullable();
+        });
     }
 
     public function down()

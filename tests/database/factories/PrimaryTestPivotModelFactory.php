@@ -15,5 +15,5 @@ use Flyhjaelp\LaravelEloquentOrderable\Tests\PrimaryTestPivotModel;
 */
 
 $factory->define(PrimaryTestPivotModel::class, function (Faker $faker) {
-   return [];
+    return [];
 });
