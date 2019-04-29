@@ -175,7 +175,7 @@ class OrderablePivotTest extends DefaultTestCase {
    }
 
    /** @test */
-   public function test_that_pivot_models_also_get_the_correct_positions_when_added_via_sync_instead_of_attach_and_detach(){
+   public function test_that_pivot_models_also_get_the_correct_positions_when_added_or_detached_via_sync_instead_of_attach_and_detach(){
 
       $primaryA = factory(PrimaryTestPivotModel::class)->create();
       $primaryB = factory(PrimaryTestPivotModel::class)->create();

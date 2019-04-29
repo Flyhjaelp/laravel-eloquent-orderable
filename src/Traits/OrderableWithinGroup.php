@@ -33,8 +33,9 @@ trait OrderableWithinGroup
         return optional(static::withinOrderGroup($this)->get()->last())->$orderColumn ?? 0;
     }
 
-    public function scopeNotSelf(Builder $query, OrderableInterface $orderableModel): void {
-       $query->where('id', '!=', $orderableModel->id);
+    public function scopeNotSelf(Builder $query, OrderableInterface $orderableModel): void
+    {
+        $query->where('id', '!=', $orderableModel->id);
     }
 
     /**
