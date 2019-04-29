@@ -139,7 +139,7 @@ class OrderablePivotTest extends DefaultTestCase {
    }
 
    /** @test */
-   public function when_a_pivot_model_with_the_orderable_trait_has_its_order_column_updated_to_a_hgiher_order_the_other_models_update_their_orders_accordingly()
+   public function when_a_pivot_model_with_the_orderable_trait_has_its_order_column_updated_to_a_higher_order_the_other_models_update_their_orders_accordingly()
    {
       $primaryA = factory(PrimaryTestPivotModel::class)->create();
       $primaryB = factory(PrimaryTestPivotModel::class)->create();
@@ -172,6 +172,51 @@ class OrderablePivotTest extends DefaultTestCase {
       $this->assertEquals(1, $primaryB->secondaries[0]->pivot->order);
       $this->assertEquals($secondaryB->id, $primaryB->secondaries[1]->pivot->secondary_test_pivot_model_id);
       $this->assertEquals(2, $primaryB->secondaries[1]->pivot->order);
+   }
+
+   /** @test */
+   public function test_that_pivot_models_also_get_the_correct_positions_when_added_via_sync_instead_of_attach_and_detach(){
+
+      $primaryA = factory(PrimaryTestPivotModel::class)->create();
+      $primaryB = factory(PrimaryTestPivotModel::class)->create();
+
+      $secondaryA = factory(SecondaryTestPivotModel::class)->create();
+      $secondaryB = factory(SecondaryTestPivotModel::class)->create();
+      $secondaryC = factory(SecondaryTestPivotModel::class)->create();
+      $secondaryD = factory(SecondaryTestPivotModel::class)->create();
+
+      $primaryA->secondaries()->sync([$secondaryA->id,$secondaryB->id,$secondaryC->id => ['order' => 2],$secondaryD->id]);
+      $primaryB->secondaries()->sync([$secondaryA->id,$secondaryB->id]);
+
+      $this->assertEquals($secondaryA->id, $primaryA->secondaries[0]->pivot->secondary_test_pivot_model_id);
+      $this->assertEquals(1, $primaryA->secondaries[0]->pivot->order);
+      $this->assertEquals($secondaryC->id, $primaryA->secondaries[1]->pivot->secondary_test_pivot_model_id);
+      $this->assertEquals(2, $primaryA->secondaries[1]->pivot->order);
+      $this->assertEquals($secondaryB->id, $primaryA->secondaries[2]->pivot->secondary_test_pivot_model_id);
+      $this->assertEquals(3, $primaryA->secondaries[2]->pivot->order);
+      $this->assertEquals($secondaryD->id, $primaryA->secondaries[3]->pivot->secondary_test_pivot_model_id);
+      $this->assertEquals(4, $primaryA->secondaries[3]->pivot->order);
+
+      $this->assertEquals($secondaryA->id, $primaryB->secondaries[0]->pivot->secondary_test_pivot_model_id);
+      $this->assertEquals(1, $primaryB->secondaries[0]->pivot->order);
+      $this->assertEquals($secondaryB->id, $primaryB->secondaries[1]->pivot->secondary_test_pivot_model_id);
+      $this->assertEquals(2, $primaryB->secondaries[1]->pivot->order);
+
+      $primaryA->secondaries()->sync([$secondaryA->id,$secondaryD->id]);
+
+      $primaryA = $primaryA->load(['secondaries']);
+      $primaryB = $primaryB->load(['secondaries']);
+
+      $this->assertEquals($secondaryA->id, $primaryA->secondaries[0]->pivot->secondary_test_pivot_model_id);
+      $this->assertEquals(1, $primaryA->secondaries[0]->pivot->order);
+      $this->assertEquals($secondaryD->id, $primaryA->secondaries[1]->pivot->secondary_test_pivot_model_id);
+      $this->assertEquals(2, $primaryA->secondaries[1]->pivot->order);
+
+      $this->assertEquals($secondaryA->id, $primaryB->secondaries[0]->pivot->secondary_test_pivot_model_id);
+      $this->assertEquals(1, $primaryB->secondaries[0]->pivot->order);
+      $this->assertEquals($secondaryB->id, $primaryB->secondaries[1]->pivot->secondary_test_pivot_model_id);
+      $this->assertEquals(2, $primaryB->secondaries[1]->pivot->order);
+
    }
 }
 
