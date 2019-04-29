@@ -159,7 +159,7 @@ class JourneyCheckpointsRelationship extends Pivot implements OrderableInterface
    
 }
 ```
-When calling the relationship from a model, you have to using the `using` method from the relationship. Also you have to add `orderBy` method call if you want the relationship ordered when retrieved.
+When calling the relationship from a model, you have to chain on the `using` method on the `belongsToMany` call when defining the relationship on the model. Also you have to add `orderBy` method call if you want the relationship ordered when retrieved.
 
 ```php
 <?php
