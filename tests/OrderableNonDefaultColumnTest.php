@@ -2,10 +2,10 @@
 
 namespace Flyhjaelp\LaravelEloquentOrderable\Tests;
 
+use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
+use Flyhjaelp\LaravelEloquentOrderable\Traits\Orderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Flyhjaelp\LaravelEloquentOrderable\Traits\Orderable;
-use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
 
 class OrderableNonDefaultColumnTest extends DefaultTestCase
 {

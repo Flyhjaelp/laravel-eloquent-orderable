@@ -2,16 +2,16 @@
 
 namespace Flyhjaelp\LaravelEloquentOrderable;
 
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\ServiceProvider;
+use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelCreating;
 use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelDeleted;
 use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelUpdated;
-use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelCreating;
 use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelUpdating;
 use Flyhjaelp\LaravelEloquentOrderable\Listeners\UpdateOrdersToFitDeletedModel;
 use Flyhjaelp\LaravelEloquentOrderable\Listeners\UpdateOrdersToFitNewOrderableModel;
 use Flyhjaelp\LaravelEloquentOrderable\Listeners\UpdateOrderToFitUpdatedOrderableModel;
 use Flyhjaelp\LaravelEloquentOrderable\Listeners\UpdateOrderToFitUpdatingOrderableModel;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider;
 
 class EloquentOrderableServiceProvider extends ServiceProvider
 {

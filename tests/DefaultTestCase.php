@@ -2,8 +2,8 @@
 
 namespace Flyhjaelp\LaravelEloquentOrderable\Tests;
 
-use Orchestra\Testbench\TestCase;
 use Flyhjaelp\LaravelEloquentOrderable\EloquentOrderableServiceProvider;
+use Orchestra\Testbench\TestCase;
 
 class DefaultTestCase extends TestCase
 {

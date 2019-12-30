@@ -3,13 +3,13 @@
 namespace Flyhjaelp\LaravelEloquentOrderable\Traits;
 
 use Exception;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelCreating;
 use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelDeleted;
 use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelUpdated;
-use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelCreating;
 use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelUpdating;
 use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Collection;
 
 trait PivotOrderable
 {

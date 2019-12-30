@@ -2,10 +2,10 @@
 
 namespace Flyhjaelp\LaravelEloquentOrderable\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelUpdating;
 use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 trait OrderableWithinGroup
 {

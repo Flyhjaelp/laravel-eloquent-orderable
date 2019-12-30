@@ -2,11 +2,11 @@
 
 namespace Flyhjaelp\LaravelEloquentOrderable\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
+use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelCreating;
 use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelDeleted;
 use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelUpdated;
-use Flyhjaelp\LaravelEloquentOrderable\Events\OrderableModelCreating;
 use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
+use Illuminate\Database\Eloquent\Builder;
 
 trait SharedOrderableMethods
 {
