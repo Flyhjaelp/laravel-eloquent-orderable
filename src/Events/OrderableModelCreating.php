@@ -2,9 +2,9 @@
 
 namespace Flyhjaelp\LaravelEloquentOrderable\Events;
 
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Events\Dispatchable;
 use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class OrderableModelCreating
 {

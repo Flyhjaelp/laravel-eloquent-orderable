@@ -2,12 +2,12 @@
 
 namespace Flyhjaelp\LaravelEloquentOrderable\Tests;
 
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Flyhjaelp\LaravelEloquentOrderable\Traits\OrderableWithinGroup;
 use Flyhjaelp\LaravelEloquentOrderable\Interfaces\OrderableInterface;
+use Flyhjaelp\LaravelEloquentOrderable\Traits\OrderableWithinGroup;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 
 class OrderableWithinGroupTest extends DefaultTestCase
 {
